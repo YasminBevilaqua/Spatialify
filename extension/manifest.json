@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Spatialify",
+  "version": "1.0.0",
+  "description": "Melhore o áudio do YouTube Music com expansão estéreo, reverb e efeito Haas em tempo real.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://music.youtube.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://music.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icon48.png",
+      "96": "icon96.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "48": "icon48.png",
+    "96": "icon96.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "spatialify@nebula.audio"
+    }
+  }
+}

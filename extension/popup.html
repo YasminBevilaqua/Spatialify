@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 320px;
+      padding: 20px;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg-primary);
+      background-image:
+        radial-gradient(ellipse at 20% 0%, rgba(124,92,255,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(92,224,216,0.08) 0%, transparent 50%);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 4px 15px rgba(124, 92, 255, 0.3);
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .status.on {
+      background: rgba(92, 255, 177, 0.15);
+      color: var(--success);
+      box-shadow: 0 0 10px rgba(92, 255, 177, 0.2);
+    }
+
+    .status.off {
+      background: rgba(255, 92, 124, 0.15);
+      color: var(--danger);
+    }
+
+    .main-control {
+      margin-bottom: 16px;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .intensity-section {
+      padding-top: 4px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .presets {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .presets-section {
+      margin-bottom: 16px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-glass);
+    }
+
+    .footer a {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer a:hover {
+      color: var(--accent);
+    }
+
+    .not-youtube {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .not-youtube .icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">🎧</div>
+      <span class="logo-text">Spatialify</span>
+    </div>
+    <span class="status off" id="status">OFF</span>
+  </div>
+
+  <div id="content">
+    <div class="main-control glass-card" style="padding: 14px; border-radius: 14px;">
+      <div class="toggle-row">
+        <span class="toggle-label">Efeitos de Áudio</span>
+        <div class="toggle" id="toggle">
+          <div class="knob"></div>
+        </div>
+      </div>
+
+      <div class="intensity-section">
+        <div class="slider-group">
+          <div class="slider-label">
+            <span>Intensidade Geral</span>
+            <span id="intensityVal">70%</span>
+          </div>
+          <input type="range" id="intensity" min="0" max="100" value="70">
+        </div>
+      </div>
+    </div>
+
+    <div class="presets-section">
+      <div class="section-title">Presets Rápidos</div>
+      <div class="presets">
+        <button class="btn-preset" data-preset="subtle">� Sutil</button>
+        <button class="btn-preset" data-preset="wide">� Amplo</button>
+        <button class="btn-preset" data-preset="ultra">✨ Ultra</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="#" id="openOptions">
+        <span>⚙</span>
+        <span>Configurações avançadas</span>
+      </a>
+    </div>
+  </div>
+
+  <div id="not-youtube" class="not-youtube" style="display: none;">
+    <div class="icon">🎵</div>
+    <p>Abra o YouTube Music para usar o Spatialify</p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
