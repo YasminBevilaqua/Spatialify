@@ -4,116 +4,690 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spatialify — Configurações</title>
-  <link rel="stylesheet" href="styles.css">
   <style>
+    /* ===== VARIÁVEIS - ROXO ESCURO PROFUNDO ===== */
+    :root {
+      --bg-deep: #06030a;
+      --bg-base: rgba(13, 7, 20, 0.5);
+      --bg-surface: rgba(20, 10, 28, 0.45);
+      --bg-elevated: rgba(28, 15, 38, 0.5);
+      --bg-interactive: rgba(36, 21, 48, 0.55);
+      --bg-highlight: rgba(45, 26, 61, 0.6);
+      
+      --text-primary: #f5edff;
+      --text-secondary: #c9b3de;
+      --text-muted: #9a7eb5;
+      
+      --accent-primary: #9b30ff;
+      --accent-secondary: #c04cff;
+      --accent-soft: #b87aff;
+      --accent-deep: #7a1fcc;
+      --accent-glow: #a855f7;
+      
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45);
+      --shadow-glow: 0 0 50px rgba(155, 48, 255, 0.15);
+      
+      --radius-3xl: 28px;
+      --radius-2xl: 20px;
+      --radius-xl: 16px;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --blur-amount: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      padding: 40px 20px;
-      background: var(--bg-primary);
-      background-image:
-        radial-gradient(ellipse at 10% 10%, rgba(124,92,255,0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 90% 90%, rgba(92,224,216,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(124,92,255,0.03) 0%, transparent 70%);
+      align-items: center;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-deep);
+      position: relative;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow: hidden;
+    }
+
+    /* ===== FUNDO COM GRADIENTE RADIAL CENTRALIZADO ===== */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-animation::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, 
+        rgba(184, 122, 255, 0.45) 0%, 
+        rgba(155, 48, 255, 0.35) 15%,
+        rgba(122, 31, 204, 0.25) 30%,
+        rgba(60, 15, 100, 0.15) 50%,
+        rgba(20, 5, 35, 0.08) 70%,
+        #06030a 100%);
+    }
+
+    .bg-animation::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, 
+        rgba(192, 76, 255, 0.3) 0%, 
+        rgba(155, 48, 255, 0.2) 20%,
+        rgba(100, 25, 170, 0.12) 40%,
+        transparent 60%,
+        #040108 100%);
+      mix-blend-mode: screen;
+    }
+
+    /* Camada adicional para profundidade */
+    .bg-animation .glow-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle at 50% 50%, 
+        rgba(184, 122, 255, 0.2) 0%, 
+        rgba(155, 48, 255, 0.1) 30%,
+        transparent 70%);
+      filter: blur(60px);
+      animation: softPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes softPulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    /* Textura de ruído */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="200" height="200" filter="url(%23noise)" opacity="0.08"/></svg>');
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: overlay;
     }
 
     .container {
       width: 100%;
-      max-width: 520px;
+      max-width: 1100px;
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 0.6s ease-out;
     }
 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== ÍCONES ===== */
+    .icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+    .icon-sm { width: 16px; height: 16px; }
+    .icon-lg { width: 24px; height: 24px; }
+    .icon-xl { width: 32px; height: 32px; }
+
+    /* ===== HEADER ===== */
     .header {
-      text-align: center;
-      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding: 0 4px;
     }
 
     .header-icon {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-      border-radius: 16px;
-      display: inline-flex;
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #9b30ff 0%, #c04cff 100%);
+      border-radius: var(--radius-xl);
+      display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
-      margin-bottom: 12px;
-      box-shadow: 0 0 40px var(--accent-glow);
+      box-shadow: var(--shadow-glow);
+      backdrop-filter: blur(var(--blur-amount));
+      -webkit-backdrop-filter: blur(var(--blur-amount));
     }
 
-    .header h1 {
-      font-size: 24px;
+    .header-icon svg {
+      width: 28px;
+      height: 28px;
+      color: white;
+    }
+
+    .header-text h1 {
+      font-size: 28px;
       font-weight: 700;
-      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #f5edff 0%, #d9c2f0 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .header p {
+    .header-text p {
       font-size: 13px;
-      color: var(--text-secondary);
-      margin-top: 4px;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: 2px;
     }
 
-    .card {
-      padding: 20px;
-      margin-bottom: 16px;
-      animation: fadeIn 0.4s ease;
+    /* ===== LAYOUT PRINCIPAL EM GRID ===== */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 20px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* ===== CARD ESQUERDO - PRESETS ===== */
+    .presets-card {
+      background: var(--bg-base);
+      backdrop-filter: blur(var(--blur-amount));
+      -webkit-backdrop-filter: blur(var(--blur-amount));
+      border-radius: var(--radius-3xl);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md), var(--shadow-glow);
     }
 
-    .card-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 16px;
+    .section-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .card-title .icon {
-      font-size: 16px;
-    }
-
-    .slider-group {
-      margin-bottom: 16px;
-    }
-
-    .slider-group:last-child {
-      margin-bottom: 0;
-    }
-
-    .actions {
-      display: flex;
       gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .section-header svg {
+      color: var(--accent-primary);
+    }
+
+    .section-header h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* Presets em coluna */
+    .presets-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .preset-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--bg-surface);
+      backdrop-filter: blur(var(--blur-amount));
+      -webkit-backdrop-filter: blur(var(--blur-amount));
+      border-radius: var(--radius-xl);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .preset-row:hover {
+      background: var(--bg-elevated);
+      transform: translateX(4px);
+    }
+
+    .preset-row.active {
+      background: linear-gradient(135deg, #9b30ff 0%, #c04cff 100%);
+      box-shadow: 0 8px 20px rgba(155, 48, 255, 0.3);
+    }
+
+    .preset-row .preset-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(28, 15, 38, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
       justify-content: center;
     }
 
-    .actions .btn {
-      min-width: 140px;
+    .preset-row.active .preset-icon {
+      background: rgba(255, 255, 255, 0.15);
     }
 
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--accent);
+    .preset-row .preset-icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent-soft);
+    }
+
+    .preset-row.active .preset-icon svg {
       color: white;
-      padding: 10px 24px;
-      border-radius: 10px;
+    }
+
+    .preset-row .preset-info {
+      flex: 1;
+    }
+
+    .preset-row .preset-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .preset-row.active .preset-name {
+      color: white;
+    }
+
+    .preset-row .preset-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .preset-row.active .preset-desc {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Presets customizados */
+    .custom-section {
+      background: var(--bg-surface);
+      backdrop-filter: blur(var(--blur-amount));
+      -webkit-backdrop-filter: blur(var(--blur-amount));
+      border-radius: var(--radius-2xl);
+      padding: 18px;
+    }
+
+    .custom-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .custom-header h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .custom-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .custom-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg-elevated);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .custom-item:hover {
+      background: var(--bg-highlight);
+    }
+
+    .custom-item span {
       font-size: 13px;
       font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .custom-item button {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 5px;
+      border-radius: var(--radius-full);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .custom-item button svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .custom-item:hover button {
+      opacity: 1;
+    }
+
+    .custom-item button:hover {
+      color: #ff7eb3;
+      background: rgba(255, 126, 179, 0.15);
+    }
+
+    .save-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .save-row input {
+      flex: 1;
+      padding: 12px 16px;
+      background: rgba(6, 3, 10, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: none;
+      border-radius: var(--radius-full);
+      color: var(--text-primary);
+      font-size: 13px;
+      outline: none;
+    }
+
+    .save-row input:focus {
+      background: rgba(10, 4, 16, 0.6);
+      box-shadow: 0 0 0 2px rgba(155, 48, 255, 0.2);
+    }
+
+    .save-row input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    .save-row .btn {
+      flex-shrink: 0;
+      padding: 10px 18px;
+    }
+
+    .save-row .btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ===== CARD DIREITO - CONTROLES ===== */
+    .controls-card {
+      background: var(--bg-base);
+      backdrop-filter: blur(var(--blur-amount));
+      -webkit-backdrop-filter: blur(var(--blur-amount));
+      border-radius: var(--radius-3xl);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md), var(--shadow-glow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sliders-list {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      flex: 1;
+    }
+
+    .slider-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slider-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .slider-header-left svg {
+      color: var(--accent-primary);
+    }
+
+    .slider-header-left span {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .slider-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-soft);
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 5px;
+      background: var(--bg-interactive);
+      border-radius: var(--radius-full);
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 12px rgba(155, 48, 255, 0.5);
+      transition: var(--transition);
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      background: var(--accent-soft);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 12px rgba(155, 48, 255, 0.5);
+      transition: var(--transition);
+    }
+
+    input[type="range"]::-moz-range-thumb:hover {
+      transform: scale(1.15);
+      background: var(--accent-soft);
+    }
+
+    input[type="range"]::-moz-range-track {
+      height: 5px;
+      background: var(--bg-interactive);
+      border-radius: var(--radius-full);
+    }
+
+    /* Visualização do palco sonoro */
+    .soundstage-preview {
+      margin-top: 32px;
+      padding: 20px;
+      background: var(--bg-surface);
+      backdrop-filter: blur(var(--blur-amount));
+      -webkit-backdrop-filter: blur(var(--blur-amount));
+      border-radius: var(--radius-2xl);
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .preview-header svg {
+      color: var(--accent-soft);
+    }
+
+    .preview-header span {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .waveform {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 50px;
+    }
+
+    .wave-bar {
+      width: 6px;
+      background: linear-gradient(to top, #9b30ff, #c04cff);
+      border-radius: var(--radius-full);
+      transition: var(--transition);
+      opacity: 0.8;
+    }
+
+    /* ===== BOTÕES ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: none;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      outline: none;
+      background: var(--bg-elevated);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: var(--bg-highlight);
+      transform: translateY(-1px);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #9b30ff 0%, #c04cff 100%);
+      color: white;
+      padding: 10px 18px;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #a855f7 0%, #d06bff 100%);
+      box-shadow: 0 6px 16px rgba(155, 48, 255, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: inset 0 0 0 1.5px var(--bg-interactive);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-surface);
+      box-shadow: inset 0 0 0 1.5px var(--accent-primary);
+    }
+
+    .reset-section {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(155, 48, 255, 0.15);
+    }
+
+    .reset-section .btn {
+      padding: 10px 20px;
+      font-size: 13px;
+    }
+
+    .reset-section .btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: linear-gradient(135deg, #9b30ff 0%, #c04cff 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: white;
+      padding: 14px 32px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
       opacity: 0;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       pointer-events: none;
-      box-shadow: 0 0 30px var(--accent-glow);
+      box-shadow: 0 8px 30px rgba(155, 48, 255, 0.5);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .toast.show {
@@ -121,188 +695,450 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    .presets-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .preset-card {
-      background: var(--bg-glass);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .preset-card:hover {
-      background: var(--bg-glass-hover);
-      transform: translateY(-2px);
-    }
-
-    .preset-card.active {
-      border-color: var(--accent);
-      background: rgba(124, 92, 255, 0.1);
-      box-shadow: 0 0 20px var(--accent-glow);
-    }
-
-    .preset-card .emoji {
-      font-size: 20px;
-      margin-bottom: 4px;
-    }
-
-    .preset-card .name {
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .custom-presets {
-      margin-top: 12px;
-    }
-
-    .custom-preset-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 12px;
-      background: var(--bg-glass);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-sm);
-      margin-bottom: 6px;
-      font-size: 13px;
-    }
-
-    .custom-preset-item button {
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      cursor: pointer;
-      font-size: 14px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      transition: all 0.2s;
-    }
-
-    .custom-preset-item button:hover {
-      color: var(--danger);
-      background: rgba(255,92,124,0.1);
-    }
-
-    .save-preset-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .save-preset-row input {
-      flex: 1;
-      padding: 8px 12px;
-      background: var(--bg-glass);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-sm);
-      color: var(--text-primary);
-      font-size: 13px;
-      outline: none;
-    }
-
-    .save-preset-row input:focus {
-      border-color: var(--accent);
-    }
+    /* ===== SCROLLBAR ===== */
+    .custom-list::-webkit-scrollbar { width: 4px; }
+    .custom-list::-webkit-scrollbar-track { background: transparent; }
+    .custom-list::-webkit-scrollbar-thumb { background: var(--bg-highlight); border-radius: var(--radius-full); }
   </style>
 </head>
 <body>
+  <!-- Fundo roxo escuro com gradiente centralizado -->
+  <div class="bg-animation">
+    <div class="glow-center"></div>
+  </div>
+
+  <!-- Ícones SVG -->
+  <svg style="display: none;">
+    <defs>
+      <symbol id="icon-headphones" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </symbol>
+      <symbol id="icon-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+      </symbol>
+      <symbol id="icon-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </symbol>
+      <symbol id="icon-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+        <polyline points="17 21 17 13 7 13 7 21"/>
+        <polyline points="7 3 7 8 15 8"/>
+      </symbol>
+      <symbol id="icon-reset" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+        <path d="M21 3v5h-5"/>
+        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+        <path d="M8 16H3v5"/>
+      </symbol>
+      <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"/>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </symbol>
+      <symbol id="icon-presets" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+      </symbol>
+      <symbol id="icon-sliders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" y1="21" x2="4" y2="14"/>
+        <line x1="4" y1="10" x2="4" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="12"/>
+        <line x1="12" y1="8" x2="12" y2="3"/>
+        <line x1="20" y1="21" x2="20" y2="16"/>
+        <line x1="20" y1="12" x2="20" y2="3"/>
+        <line x1="2" y1="14" x2="6" y2="14"/>
+        <line x1="10" y1="12" x2="14" y2="12"/>
+        <line x1="18" y1="16" x2="22" y2="16"/>
+      </symbol>
+      <symbol id="icon-stereo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 18L21 6M3 6l18 12"/>
+        <circle cx="8" cy="8" r="2"/>
+        <circle cx="16" cy="16" r="2"/>
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </symbol>
+      <symbol id="icon-wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 12h4M8 8v8M14 5v14M18 9v6M22 12h-4"/>
+      </symbol>
+      <symbol id="icon-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      </symbol>
+      <symbol id="icon-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <div class="container">
+    <!-- Header -->
     <div class="header">
-      <div class="header-icon">🎧</div>
-      <h1>Spatialify</h1>
-      <p>Expansão estéreo focada para YouTube Music</p>
-    </div>
-
-    <!-- Presets -->
-    <div class="card glass-card" style="animation-delay: 0.05s;">
-      <div class="card-title"><span class="icon">🎛</span> Presets</div>
-      <div class="presets-grid">
-        <div class="preset-card" data-preset="subtle">
-          <div class="emoji">�</div>
-          <div class="name">Sutil</div>
-        </div>
-        <div class="preset-card" data-preset="wide">
-          <div class="emoji">�</div>
-          <div class="name">Amplo</div>
-        </div>
-        <div class="preset-card" data-preset="ultra">
-          <div class="emoji">✨</div>
-          <div class="name">Ultra</div>
-        </div>
+      <div class="header-icon">
+        <svg><use href="#icon-headphones"/></svg>
       </div>
-
-      <div class="custom-presets" id="customPresets"></div>
-
-      <div class="save-preset-row">
-        <input type="text" id="presetName" placeholder="Nome do preset...">
-        <button class="btn btn-primary" id="savePreset">Salvar</button>
+      <div class="header-text">
+        <h1>Spatialify</h1>
+        <p>Expansão estéreo profissional para YouTube Music</p>
       </div>
     </div>
 
-    <!-- Stereo Width -->
-    <div class="card glass-card" style="animation-delay: 0.1s;">
-      <div class="card-title"><span class="icon">↔️</span> Largura Estéreo</div>
-      <div class="slider-group">
-        <div class="slider-label">
-          <span>Abertura estéreo</span>
-          <span id="widthVal">65%</span>
+    <!-- Layout em Grid -->
+    <div class="dashboard-grid">
+      <!-- Card Esquerdo - Presets -->
+      <div class="presets-card">
+        <div class="section-header">
+          <svg class="icon-lg"><use href="#icon-presets"/></svg>
+          <h2>Presets</h2>
         </div>
-        <input type="range" id="width" min="0" max="100" value="65">
-      </div>
-    </div>
-
-    <!-- Haas Effect -->
-    <div class="card glass-card" style="animation-delay: 0.15s;">
-      <div class="card-title"><span class="icon">⏱</span> Efeito Haas (Micro-delays)</div>
-      <div class="slider-group">
-        <div class="slider-label">
-          <span>Diferença de delay entre canais</span>
-          <span id="haasVal">45%</span>
+        
+        <div class="presets-vertical">
+          <div class="preset-row" data-preset="subtle">
+            <div class="preset-icon">
+              <svg><use href="#icon-moon"/></svg>
+            </div>
+            <div class="preset-info">
+              <div class="preset-name">Sutil</div>
+              <div class="preset-desc">Suave e natural</div>
+            </div>
+          </div>
+          <div class="preset-row active" data-preset="wide">
+            <div class="preset-icon">
+              <svg><use href="#icon-compass"/></svg>
+            </div>
+            <div class="preset-info">
+              <div class="preset-name">Amplo</div>
+              <div class="preset-desc">Palco sonoro expandido</div>
+            </div>
+          </div>
+          <div class="preset-row" data-preset="ultra">
+            <div class="preset-icon">
+              <svg><use href="#icon-zap"/></svg>
+            </div>
+            <div class="preset-info">
+              <div class="preset-name">Ultra</div>
+              <div class="preset-desc">Imersão máxima</div>
+            </div>
+          </div>
         </div>
-        <input type="range" id="haasDelay" min="0" max="100" value="45">
-      </div>
-    </div>
 
-    <!-- Phase -->
-    <div class="card glass-card" style="animation-delay: 0.2s;">
-      <div class="card-title"><span class="icon">〰️</span> Inversão de Fase</div>
-      <div class="slider-group">
-        <div class="slider-label">
-          <span>Inversão sutil (efeito de fase)</span>
-          <span id="phaseVal">25%</span>
+        <div class="custom-section">
+          <div class="custom-header">
+            <h3>Seus presets</h3>
+            <span style="font-size: 11px; color: var(--text-muted);">clique para carregar</span>
+          </div>
+          <div class="custom-list" id="customPresetsList"></div>
+          
+          <div class="save-row">
+            <input type="text" id="presetName" placeholder="Nome do preset...">
+            <button class="btn btn-primary" id="savePreset">
+              <svg><use href="#icon-save"/></svg>
+              Salvar
+            </button>
+          </div>
         </div>
-        <input type="range" id="phaseInvert" min="0" max="100" value="25">
       </div>
-    </div>
 
-    <!-- Gain Compensation -->
-    <div class="card glass-card" style="animation-delay: 0.25s;">
-      <div class="card-title"><span class="icon">📢</span> Compensação de Ganho</div>
-      <div class="slider-group">
-        <div class="slider-label">
-          <span>Ganho para compensar perdas</span>
-          <span id="gainVal">15%</span>
+      <!-- Card Direito - Controles -->
+      <div class="controls-card">
+        <div class="section-header">
+          <svg class="icon-lg"><use href="#icon-sliders"/></svg>
+          <h2>Controles</h2>
         </div>
-        <input type="range" id="gainCompensation" min="0" max="100" value="15">
-      </div>
-    </div>
+        
+        <div class="sliders-list">
+          <div class="slider-block">
+            <div class="slider-header">
+              <div class="slider-header-left">
+                <svg class="icon-sm"><use href="#icon-stereo"/></svg>
+                <span>Largura Estéreo</span>
+              </div>
+              <span class="slider-value" id="widthVal">65%</span>
+            </div>
+            <input type="range" id="width" min="0" max="100" value="65">
+          </div>
+          
+          <div class="slider-block">
+            <div class="slider-header">
+              <div class="slider-header-left">
+                <svg class="icon-sm"><use href="#icon-clock"/></svg>
+                <span>Efeito Haas</span>
+              </div>
+              <span class="slider-value" id="haasVal">45%</span>
+            </div>
+            <input type="range" id="haasDelay" min="0" max="100" value="45">
+          </div>
+          
+          <div class="slider-block">
+            <div class="slider-header">
+              <div class="slider-header-left">
+                <svg class="icon-sm"><use href="#icon-wave"/></svg>
+                <span>Inversão de Fase</span>
+              </div>
+              <span class="slider-value" id="phaseVal">25%</span>
+            </div>
+            <input type="range" id="phaseInvert" min="0" max="100" value="25">
+          </div>
+          
+          <div class="slider-block">
+            <div class="slider-header">
+              <div class="slider-header-left">
+                <svg class="icon-sm"><use href="#icon-volume"/></svg>
+                <span>Compensação de Ganho</span>
+              </div>
+              <span class="slider-value" id="gainVal">15%</span>
+            </div>
+            <input type="range" id="gainCompensation" min="0" max="100" value="15">
+          </div>
+        </div>
 
-    <!-- Actions -->
-    <div class="actions" style="margin-top: 8px;">
-      <button class="btn btn-danger" id="resetBtn">🔄 Resetar</button>
+        <!-- Visualização do palco sonoro -->
+        <div class="soundstage-preview">
+          <div class="preview-header">
+            <svg class="icon-sm"><use href="#icon-activity"/></svg>
+            <span>Palco sonoro</span>
+          </div>
+          <div class="waveform" id="waveform"></div>
+        </div>
+
+        <!-- Botão Restaurar -->
+        <div class="reset-section">
+          <button class="btn btn-outline" id="resetBtn">
+            <svg><use href="#icon-reset"/></svg>
+            Restaurar padrões
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="toast" id="toast">Configurações salvas!</div>
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <svg><use href="#icon-check"/></svg>
+    <span id="toastMessage">Configurações salvas!</span>
+  </div>
 
-  <script src="options.js"></script>
+  <script>
+    (function() {
+      const widthSlider = document.getElementById('width');
+      const haasSlider = document.getElementById('haasDelay');
+      const phaseSlider = document.getElementById('phaseInvert');
+      const gainSlider = document.getElementById('gainCompensation');
+      
+      const widthVal = document.getElementById('widthVal');
+      const haasVal = document.getElementById('haasVal');
+      const phaseVal = document.getElementById('phaseVal');
+      const gainVal = document.getElementById('gainVal');
+      
+      const presetRows = document.querySelectorAll('.preset-row');
+      const customPresetsList = document.getElementById('customPresetsList');
+      const savePresetBtn = document.getElementById('savePreset');
+      const presetNameInput = document.getElementById('presetName');
+      const resetBtn = document.getElementById('resetBtn');
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      const waveform = document.getElementById('waveform');
+
+      let customPresets = [];
+      
+      try {
+        const saved = localStorage.getItem('spatialify_custom_presets');
+        if (saved) customPresets = JSON.parse(saved);
+      } catch (e) {
+        console.error('Erro ao carregar presets:', e);
+      }
+
+      function generateWaveform() {
+        const width = parseInt(widthSlider.value);
+        const bars = [];
+        const barCount = 12;
+        
+        for (let i = 0; i < barCount; i++) {
+          const position = (i / (barCount - 1)) * 2 - 1;
+          const stereoFactor = Math.abs(position) * (width / 50);
+          const height = Math.min(40, 15 + Math.sin(position * Math.PI) * 20 + stereoFactor * 10);
+          bars.push(`<div class="wave-bar" style="height: ${height}px; opacity: ${0.4 + (width / 100) * 0.5}"></div>`);
+        }
+        
+        waveform.innerHTML = bars.join('');
+      }
+
+      function updateUI() {
+        widthVal.textContent = widthSlider.value + '%';
+        haasVal.textContent = haasSlider.value + '%';
+        phaseVal.textContent = phaseSlider.value + '%';
+        gainVal.textContent = gainSlider.value + '%';
+        
+        [widthSlider, haasSlider, phaseSlider, gainSlider].forEach(slider => {
+          const percent = slider.value;
+          slider.style.background = `linear-gradient(to right, #9b30ff 0%, #c04cff ${percent}%, rgba(36, 21, 48, 0.55) ${percent}%)`;
+        });
+        
+        generateWaveform();
+      }
+
+      function applyPreset(preset) {
+        const presets = {
+          subtle: { width: 35, haas: 25, phase: 15, gain: 10 },
+          wide: { width: 65, haas: 45, phase: 25, gain: 15 },
+          ultra: { width: 90, haas: 70, phase: 40, gain: 20 }
+        };
+        
+        const values = presets[preset];
+        if (values) {
+          widthSlider.value = values.width;
+          haasSlider.value = values.haas;
+          phaseSlider.value = values.phase;
+          gainSlider.value = values.gain;
+          updateUI();
+          
+          presetRows.forEach(row => {
+            row.classList.remove('active');
+            if (row.dataset.preset === preset) row.classList.add('active');
+          });
+        }
+      }
+
+      function renderCustomPresets() {
+        if (customPresets.length === 0) {
+          customPresetsList.innerHTML = '<div style="color: var(--text-muted); font-size: 13px; padding: 12px; text-align: center;">Nenhum preset salvo</div>';
+          return;
+        }
+        
+        customPresetsList.innerHTML = customPresets.map((preset, index) => `
+          <div class="custom-item" data-index="${index}">
+            <span>${preset.name}</span>
+            <button class="delete-preset" data-index="${index}">
+              <svg><use href="#icon-trash"/></svg>
+            </button>
+          </div>
+        `).join('');
+        
+        document.querySelectorAll('.custom-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            if (!e.target.closest('.delete-preset')) {
+              const index = parseInt(item.dataset.index);
+              const preset = customPresets[index];
+              widthSlider.value = preset.width;
+              haasSlider.value = preset.haas;
+              phaseSlider.value = preset.phase;
+              gainSlider.value = preset.gain;
+              updateUI();
+              saveSettings();
+              
+              presetRows.forEach(row => row.classList.remove('active'));
+              showToast(`Preset "${preset.name}" carregado!`);
+            }
+          });
+        });
+        
+        document.querySelectorAll('.delete-preset').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const index = parseInt(btn.dataset.index);
+            const presetName = customPresets[index].name;
+            customPresets.splice(index, 1);
+            localStorage.setItem('spatialify_custom_presets', JSON.stringify(customPresets));
+            renderCustomPresets();
+            showToast(`Preset "${presetName}" removido!`);
+          });
+        });
+      }
+
+      function showToast(message) {
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      }
+
+      function saveSettings() {
+        const settings = {
+          width: widthSlider.value,
+          haasDelay: haasSlider.value,
+          phaseInvert: phaseSlider.value,
+          gainCompensation: gainSlider.value
+        };
+        
+        localStorage.setItem('spatialify_settings', JSON.stringify(settings));
+        
+        if (chrome && chrome.storage && chrome.storage.sync) {
+          chrome.storage.sync.set({ spatialify_settings: settings }, () => {
+            console.log('Configurações salvas na nuvem');
+          });
+        }
+      }
+
+      widthSlider.addEventListener('input', () => { updateUI(); saveSettings(); });
+      haasSlider.addEventListener('input', () => { updateUI(); saveSettings(); });
+      phaseSlider.addEventListener('input', () => { updateUI(); saveSettings(); });
+      gainSlider.addEventListener('input', () => { updateUI(); saveSettings(); });
+
+      presetRows.forEach(row => {
+        row.addEventListener('click', () => {
+          const preset = row.dataset.preset;
+          applyPreset(preset);
+          saveSettings();
+          showToast(`Preset "${row.querySelector('.preset-name').textContent}" aplicado!`);
+        });
+      });
+
+      savePresetBtn.addEventListener('click', () => {
+        const name = presetNameInput.value.trim();
+        if (!name) { showToast('Digite um nome para o preset!'); return; }
+        
+        const newPreset = {
+          name: name,
+          width: parseInt(widthSlider.value),
+          haas: parseInt(haasSlider.value),
+          phase: parseInt(phaseSlider.value),
+          gain: parseInt(gainSlider.value)
+        };
+        
+        customPresets.push(newPreset);
+        localStorage.setItem('spatialify_custom_presets', JSON.stringify(customPresets));
+        renderCustomPresets();
+        presetNameInput.value = '';
+        showToast(`Preset "${name}" salvo!`);
+      });
+
+      resetBtn.addEventListener('click', () => {
+        applyPreset('wide');
+        saveSettings();
+        showToast('Configurações restauradas!');
+      });
+
+      function loadSettings() {
+        try {
+          const saved = localStorage.getItem('spatialify_settings');
+          if (saved) {
+            const settings = JSON.parse(saved);
+            widthSlider.value = settings.width || 65;
+            haasSlider.value = settings.haasDelay || 45;
+            phaseSlider.value = settings.phaseInvert || 25;
+            gainSlider.value = settings.gainCompensation || 15;
+            updateUI();
+          }
+        } catch (e) {
+          console.error('Erro ao carregar configurações:', e);
+        }
+      }
+
+      loadSettings();
+      renderCustomPresets();
+      updateUI();
+      
+      window.addEventListener('beforeunload', saveSettings);
+    })();
+  </script>
 </body>
 </html>

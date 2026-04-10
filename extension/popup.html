@@ -2,167 +2,70 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      width: 320px;
-      padding: 20px;
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      background: var(--bg-primary);
-      background-image:
-        radial-gradient(ellipse at 20% 0%, rgba(124,92,255,0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 100%, rgba(92,224,216,0.08) 0%, transparent 50%);
-      color: var(--text-primary);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      box-shadow: 0 4px 15px rgba(124, 92, 255, 0.3);
-    }
-
-    .logo-text {
-      font-size: 18px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .status {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .status.on {
-      background: rgba(92, 255, 177, 0.15);
-      color: var(--success);
-      box-shadow: 0 0 10px rgba(92, 255, 177, 0.2);
-    }
-
-    .status.off {
-      background: rgba(255, 92, 124, 0.15);
-      color: var(--danger);
-    }
-
-    .main-control {
-      margin-bottom: 16px;
-    }
-
-    .toggle-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .toggle-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-
-    .intensity-section {
-      padding-top: 4px;
-    }
-
-    .section-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-
-    .presets {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .presets-section {
-      margin-bottom: 16px;
-    }
-
-    .footer {
-      display: flex;
-      justify-content: center;
-      padding-top: 12px;
-      border-top: 1px solid var(--border-glass);
-    }
-
-    .footer a {
-      font-size: 12px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .footer a:hover {
-      color: var(--accent);
-    }
-
-    .not-youtube {
-      text-align: center;
-      padding: 20px;
-      color: var(--text-secondary);
-      font-size: 13px;
-    }
-
-    .not-youtube .icon {
-      font-size: 32px;
-      margin-bottom: 10px;
-      opacity: 0.5;
-    }
-  </style>
+  <link rel="stylesheet" href="popup.css">
 </head>
 <body>
+  <!-- Ícones SVG -->
+  <svg style="display: none;">
+    <defs>
+      <symbol id="icon-headphones" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+      </symbol>
+      
+      <symbol id="icon-audio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 10v4M6 7v10M10 4v16M14 7v10M18 10v4"/>
+      </symbol>
+      
+      <symbol id="icon-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3L14 8L19 10L14 12L12 17L10 12L5 10L10 8L12 3Z"/>
+        <path d="M19 4L20 7L23 8L20 9L19 12L18 9L15 8L18 7L19 4Z"/>
+      </symbol>
+      
+      <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </symbol>
+      
+      <symbol id="icon-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+      </symbol>
+      
+      <symbol id="icon-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </symbol>
+      
+      <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </symbol>
+
+      <symbol id="icon-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <div class="header">
     <div class="logo">
-      <div class="logo-icon">🎧</div>
+      <div class="logo-icon">
+        <svg><use href="#icon-headphones"/></svg>
+      </div>
       <span class="logo-text">Spatialify</span>
     </div>
-    <span class="status off" id="status">OFF</span>
+    <span class="status-badge off" id="status">OFF</span>
   </div>
 
   <div id="content">
-    <div class="main-control glass-card" style="padding: 14px; border-radius: 14px;">
+    <!-- Card principal sem bordas -->
+    <div class="main-control glass-card">
       <div class="toggle-row">
-        <span class="toggle-label">Efeitos de Áudio</span>
+        <span class="toggle-label">
+          <svg class="icon"><use href="#icon-audio"/></svg>
+          Áudio Espacial
+        </span>
         <div class="toggle" id="toggle">
           <div class="knob"></div>
         </div>
@@ -171,7 +74,10 @@
       <div class="intensity-section">
         <div class="slider-group">
           <div class="slider-label">
-            <span>Intensidade Geral</span>
+            <span>
+              <svg class="icon-sm"><use href="#icon-sparkle"/></svg>
+              Intensidade
+            </span>
             <span id="intensityVal">70%</span>
           </div>
           <input type="range" id="intensity" min="0" max="100" value="70">
@@ -180,25 +86,39 @@
     </div>
 
     <div class="presets-section">
-      <div class="section-title">Presets Rápidos</div>
+      <div class="section-title">
+        <svg class="icon-sm"><use href="#icon-sparkle"/></svg>
+        Presets
+      </div>
       <div class="presets">
-        <button class="btn-preset" data-preset="subtle">� Sutil</button>
-        <button class="btn-preset" data-preset="wide">� Amplo</button>
-        <button class="btn-preset" data-preset="ultra">✨ Ultra</button>
+        <button class="btn-preset" data-preset="subtle">
+          <svg><use href="#icon-moon"/></svg>
+          <span>Sutil</span>
+        </button>
+        <button class="btn-preset" data-preset="wide">
+          <svg><use href="#icon-compass"/></svg>
+          <span>Amplo</span>
+        </button>
+        <button class="btn-preset active" data-preset="ultra">
+          <svg><use href="#icon-zap"/></svg>
+          <span>Ultra</span>
+        </button>
       </div>
     </div>
 
     <div class="footer">
-      <a href="#" id="openOptions">
-        <span>⚙</span>
-        <span>Configurações avançadas</span>
+      <a href="#" class="footer-link" id="openOptions">
+        <svg class="icon-sm"><use href="#icon-settings"/></svg>
+        <span>Avançado</span>
       </a>
     </div>
   </div>
 
   <div id="not-youtube" class="not-youtube" style="display: none;">
-    <div class="icon">🎵</div>
-    <p>Abra o YouTube Music para usar o Spatialify</p>
+    <div class="icon-wrapper">
+      <svg><use href="#icon-music"/></svg>
+    </div>
+    <p>Abra o YouTube Music para<br>usar o Spatialify</p>
   </div>
 
   <script src="popup.js"></script>
