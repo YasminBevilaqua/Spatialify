@@ -20,8 +20,8 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "48": "icon48.png",
-      "96": "icon96.png"
+      "48": "LOGOSPATIALY.PNG",
+      "96": "LOGOSPATIALY.PNG"
     }
   },
   "options_ui": {
@@ -29,8 +29,8 @@
     "open_in_tab": true
   },
   "icons": {
-    "48": "icon48.png",
-    "96": "icon96.png"
+    "48": "LOGOSPATIALY.PNG",
+    "96": "LOGOSPATIALY.PNG"
   },
   "browser_specific_settings": {
     "gecko": {

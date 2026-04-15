@@ -11,7 +11,7 @@
   const presetButtons = document.querySelectorAll('.btn-preset');
   const content = document.getElementById('content');
   const notYoutube = document.getElementById('not-youtube');
-  const openOptionsBtn = document.getElementById('openOptions');
+  const openOptionsBtn = document.getElementById('openOptionsHeader');
   
   // API compatibility
   const api = (typeof browser !== 'undefined') ? browser : chrome;

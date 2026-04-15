@@ -170,6 +170,8 @@
 
     .logo-icon svg { width:17px; height:17px; color:#fff; }
 
+.logo-icon img.logo-img { width:22px; height:22px; object-fit:contain; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
+
     .logo-name {
       font-family: var(--clash);
       font-size: 25px;
@@ -665,10 +667,6 @@
 
   <svg style="display:none;">
     <defs>
-      <symbol id="i-head" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
-        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
-      </symbol>
       <symbol id="i-wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <path d="M2 12h2M6 8v8M10 5v14M14 9v6M18 7v10M22 12h-2"/>
       </symbol>
@@ -705,7 +703,7 @@
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="logo">
-        <div class="logo-icon"><svg><use href="#i-head"/></svg></div>
+        <div class="logo-icon"><img src="SPATIALYICON.PNG" alt="Spatialify" class="logo-img"></div>
         <div class="logo-name">Spatialify</div>
       </div>
 

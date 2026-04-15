@@ -12,11 +12,6 @@
   <!-- Ícones SVG -->
   <svg style="display: none;">
     <defs>
-      <symbol id="icon-headphones" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
-        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
-      </symbol>
-      
       <symbol id="icon-audio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M2 10v4M6 7v10M10 4v16M14 7v10M18 10v4"/>
       </symbol>
@@ -55,11 +50,14 @@
   <div class="header">
     <div class="logo">
       <div class="logo-icon">
-        <svg><use href="#icon-headphones"/></svg>
+        <img src="SPATIALYICON.PNG" alt="Spatialify" class="logo-img">
       </div>
       <span class="logo-text">Spatialify</span>
     </div>
-    <span class="status-badge off" id="status">OFF</span>
+    <a href="#" class="header-btn-advanced" id="openOptionsHeader">
+      <svg class="icon-sm"><use href="#icon-settings"/></svg>
+      <span>Avançado</span>
+    </a>
   </div>
 
   <div id="content">
@@ -72,6 +70,7 @@
         </span>
         <div class="toggle" id="toggle">
           <div class="knob"></div>
+          <span class="toggle-status off" id="status">OFF</span>
         </div>
       </div>
 
@@ -111,10 +110,7 @@
     </div>
 
     <div class="footer">
-      <a href="#" class="footer-link" id="openOptions">
-        <svg class="icon-sm"><use href="#icon-settings"/></svg>
-        <span>Avançado</span>
-      </a>
+      <span class="footer-hint">YouTube Music detectado</span>
     </div>
   </div>
 
