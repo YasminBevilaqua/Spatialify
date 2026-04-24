@@ -32,13 +32,13 @@
   let retryCount = 0;
   const MAX_RETRIES = 50;
 
-  // Settings focused on stereo widening
+  // Settings focused on stereo widening - AGGRESSIVE defaults for real room feel
   const DEFAULT_SETTINGS = {
     enabled: true,
-    width: 65,           // Stereo width (0-100)
-    haasDelay: 45,      // Haas effect intensity (0-100)
-    phaseInvert: 25,    // Phase inversion amount (0-100)
-    gainCompensation: 15, // Gain boost to compensate for phase cancellation (0-100)
+    width: 75,           // Stereo width (0-100) - higher for room-like spaciousness
+    haasDelay: 65,      // Haas effect intensity (0-100) - more delay for "hall" effect
+    phaseInvert: 35,    // Phase inversion amount (0-100) - subtle but present
+    gainCompensation: 25, // Gain boost to compensate for phase cancellation (0-100)
   };
 
   let settings = { ...DEFAULT_SETTINGS };
@@ -161,13 +161,13 @@
 
   /**
    * Apply stereo widening settings
-   * Focus on: delays, gain differences, and phase
+   * Enhanced for REAL room-like spaciousness
    */
   function applySettings() {
     if (!initialized || !audioContext) return;
 
     const t = audioContext.currentTime;
-    const rampTime = 0.03; // 30ms ramp for smooth transitions
+    const rampTime = 0.02; // 20ms ramp for smooth transitions
 
     // Enable/disable processing
     if (settings.enabled) {
@@ -184,39 +184,40 @@
     const phaseFactor = settings.phaseInvert / 100;
     const gainFactor = settings.gainCompensation / 100;
 
-    // DELAYS - Haas effect
-    // Left: 0-8ms delay based on width
-    // Right: 0-15ms delay (slightly more for Haas effect)
-    const leftDelayTime = 0.008 * widthFactor;   // 0-8ms
-    const rightDelayTime = 0.008 + (0.007 * haasFactor); // 8-15ms
+    // DELAYS - Much larger for room-like reflections
+    // Left: 0-18ms (room reflection simulation)
+    // Right: 8-30ms (Haas effect + room reflections)
+    const leftDelayTime = 0.003 + (widthFactor * 0.015);   // 3-18ms
+    const rightDelayTime = 0.008 + (haasFactor * 0.022); // 8-30ms
     
     leftDelay.delayTime.setTargetAtTime(leftDelayTime, t, rampTime);
     rightDelay.delayTime.setTargetAtTime(rightDelayTime, t, rampTime);
 
-    // GAINS - Create width through channel difference
-    // As width increases, channels diverge slightly
+    // GAINS - Much more aggressive channel separation
+    // Simulate listening in a large room with speakers far apart
     const baseGain = 1.0;
-    const leftChannelGain = baseGain + (widthFactor * 0.15);
-    const rightChannelGain = baseGain - (widthFactor * 0.05);
+    // Left channel gets boosted, right slightly reduced for width
+    const leftChannelGain = baseGain + (widthFactor * 0.35) + (gainFactor * 0.1);
+    const rightChannelGain = baseGain + (widthFactor * 0.25) + (gainFactor * 0.1);
     
     leftGain.gain.setTargetAtTime(leftChannelGain, t, rampTime);
     rightGain.gain.setTargetAtTime(rightChannelGain, t, rampTime);
 
-    // PHASE - Subtle phase inversion for widening
-    // Left stays positive, right gets partial phase inversion
-    // Phase inversion range: 1.0 (no invert) to -0.4 (partial invert)
+    // PHASE - Enhanced mid/side processing feel
+    // Creates the illusion of sound coming from outside the headphones
+    // Left: normal phase
+    // Right: partial phase shift to create "outside head" sensation
     const leftPhaseValue = 1.0;
-    const rightPhaseValue = 1.0 - (phaseFactor * 1.4); // 1.0 down to -0.4
+    const rightPhaseValue = 1.0 - (phaseFactor * 0.6); // 1.0 down to 0.4 (less destructive)
     
     leftPhase.gain.setTargetAtTime(leftPhaseValue, t, rampTime);
     rightPhase.gain.setTargetAtTime(rightPhaseValue, t, rampTime);
 
-    // GAIN COMPENSATION - Boost slightly to compensate for phase cancellation
-    // Range: 1.0 to 1.2
-    const compensationGain = 1.0 + (gainFactor * 0.2);
-    // Apply to both channels through processedGain
-    // Note: processedGain is already at 1, so we use a separate node if needed
-    // For now, we apply it to the final output
+    // MASTER GAIN - Maintain overall loudness
+    // Boost processed signal to match bypass level
+    // Compensate for any phase cancellation
+    const masterBoost = 1.0 + (gainFactor * 0.15) + (widthFactor * 0.08);
+    processedGain.gain.setTargetAtTime(masterBoost, t, rampTime);
   }
 
   /**

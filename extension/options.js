@@ -6,11 +6,12 @@ console.log("[Spatialify Options] Inicializando...");
 // ===== COMPATIBILIDADE FIREFOX/CHROME =====
 const api = typeof browser !== "undefined" ? browser : chrome;
 
-// ===== CONSTANTES =====
+// ===== PRESETS =====
+// Enhanced for REAL room-like spaciousness
 const PRESETS = {
-  subtle: { width: 35, haas: 25, phase: 15, gain: 10, label: "Sutil" },
-  wide:   { width: 65, haas: 45, phase: 25, gain: 15, label: "Amplo" },
-  ultra:  { width: 90, haas: 70, phase: 40, gain: 20, label: "Ultra" }
+  subtle: { width: 45, haas: 30, phase: 15, gain: 10, label: "Sutil" },      // Sala pequena
+  wide:   { width: 85, haas: 75, phase: 40, gain: 30, label: "Amplo" },       // Sala grande / concert hall
+  ultra:  { width: 100, haas: 90, phase: 55, gain: 40, label: "Ultra" }       // Stadium / arena feel
 };
 
 const DEFAULT_SETTINGS = {
